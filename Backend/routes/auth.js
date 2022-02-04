@@ -15,7 +15,7 @@ router.post('/createuser', [
   body('password').isLength({ min: 5 })
 ],
   async (req, res) => {
-
+    let success = false;
     //errors after validation
     const errors = validationResult(req);
 
@@ -56,7 +56,8 @@ router.post('/createuser', [
       const authtoken = jwt.sign(data, JWT_SECERT);
       console.log(authtoken);
       //sending the authtoken as a response
-      return res.json({ authtoken })
+      success = true;
+      return res.json({success, authtoken })
     }
     catch (error) {
       console.error(error.message);
@@ -67,7 +68,7 @@ router.post('/login', [
   body('email').isEmail(),
   body('password').exists()
 ], async (req, res) => {
-
+  let success = false;
   const error = validationResult(req)
   if (!error.isEmpty()) {
     return res.status(400).json({ errors: "Enter valid credentails" });
@@ -90,7 +91,8 @@ router.post('/login', [
     const authtoken = jwt.sign(data, JWT_SECERT);
     console.log(authtoken);
     //sending the authtoken as a response
-    return res.json({ authtoken })
+    success = true;
+    return res.json({ success,authtoken })
   }
   catch (error) {
     return res.status(500).json({ errors: "Internal server error" });

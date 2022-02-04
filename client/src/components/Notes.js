@@ -2,10 +2,18 @@ import React, { useEffect } from 'react'
 import noteContext from '../context/NoteContext'
 import NoteItem from './NoteItem'
 import { useContext } from 'react'
+import { useHistory } from 'react-router-dom'
 export default function Notes() {
     const allnotes  = useContext(noteContext)
+    const history = useHistory();
     useEffect(() => {
-      allnotes.getUserAllNotes();
+      
+      if(localStorage.getItem("token")) {
+        allnotes.getUserAllNotes();
+      }
+      else {
+          history.push("/login")
+      }
     }, []);
     
     return (

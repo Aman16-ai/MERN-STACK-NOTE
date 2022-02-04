@@ -1,17 +1,18 @@
 import react from "react";
 import noteContext from "./NoteContext";
 import { useState } from "react";
+import { useHistory } from "react-router-dom";
 const NoteState = (props) => {
     let host = 'http://localhost:5000/'
-    
     const [note, setNote] = useState([])
+    
     async function getUserAllNotes() {
         let url = `${host}api/notes/fetchallnotes`;
         const response = await fetch(url,{
             method:"GET",
             headers: {
                 'Content-Type':'application/json',
-                'auth-token' : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjFhZTJjNjU2NGEwM2IwZTlhNmU2YzhjIn0sImlhdCI6MTYzODg4NDE0M30.ot6A7t_73A1AkV387Dl7DSoJ3BCqd1mxwKeky879KoE'
+                'auth-token' : localStorage.getItem("token")
             }
         });
         const data = await response.json();
@@ -30,7 +31,7 @@ const NoteState = (props) => {
             method:"POST",
             headers : {
                 'Content-Type' : 'application/json',
-                'auth-token' : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjFhZTJjNjU2NGEwM2IwZTlhNmU2YzhjIn0sImlhdCI6MTYzODg4NDE0M30.ot6A7t_73A1AkV387Dl7DSoJ3BCqd1mxwKeky879KoE'
+                'auth-token' : localStorage.getItem("token")
             },
             body : JSON.stringify(postData)
         })
@@ -38,8 +39,19 @@ const NoteState = (props) => {
         console.log(data)
         setNote([...note,data]);
     }
-    function deleteNote(id) {
+    async function deleteNote(id) {
         console.log("Deleting a note with id : ",id)
+
+        let url = `${host}api/notes/deleteNote/${id}`
+        const response = await fetch(url,{
+            method:'DELETE',
+            headers : {
+                'Content-Type': 'application/json',
+                'auth-token' : localStorage.getItem("token")
+            }
+        })
+        let data = await response.json();
+        console.log(data)
         let updatenotes  = note.filter(e => e._id !== id);
         console.log("updateNotes",updatenotes)
         setNote(updatenotes)

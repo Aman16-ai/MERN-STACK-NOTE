@@ -1,14 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
     Link,
+    useHistory,
     useLocation
 } from "react-router-dom";
 import { useEffect } from 'react';
 export default function NavBar() {
+    // const [authState,setAuthState] = useState(false)
+    const history = useHistory();
     let location = useLocation();
+
+    function handleLogout() {
+        localStorage.removeItem("token")
+        history.push("/login")
+    }
     useEffect(() => {
         console.log(location.pathname)
-    }, [location])
+        
+    }, [])
     return (
         <div>
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -29,10 +38,13 @@ export default function NavBar() {
                                 <Link class="nav-link disabled">Disabled</Link>
                             </li>
                         </ul>
-                        <form class="d-flex">
-                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                            <button class="btn btn-outline-success" type="submit">Search</button>
-                        </form>
+                        <div className="btns">
+                            {localStorage.getItem("token")?<button className='btn btn-danger' onClick={handleLogout}>Logout</button>: <div className="btns-child">
+                                <Link className="btn btn-danger mx-3" to={"/login"}>Login</Link>
+                                <Link className='btn btn-danger' to={"/Sign Up"}>Sign Up</Link>
+                            </div>
+                            }
+                        </div>
                     </div>
                 </div>
             </nav>
