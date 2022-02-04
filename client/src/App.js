@@ -10,6 +10,9 @@ import {
   Link
 } from "react-router-dom";
 import NoteState from './context/NoteState';
+import { Login } from './components/Login';
+import { useState } from 'react';
+import UpdateNote from './components/UpdateNote';
 
 
 function App() {
@@ -22,8 +25,14 @@ function App() {
           <Route exact path="/">
             <Home/>
           </Route>
-          <Route exact path="/about">
+          <Route  path="/about">
             <About/>
+          </Route>
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Route path="/updateNote/:id">
+            <UpdateNote/>
           </Route>
         </switch>
       </Router>
