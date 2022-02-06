@@ -41,7 +41,7 @@ export default function NavBar() {
                         <div className="btns">
                             {localStorage.getItem("token")?<button className='btn btn-danger' onClick={handleLogout}>Logout</button>: <div className="btns-child">
                                 <Link className="btn btn-danger mx-3" to={"/login"}>Login</Link>
-                                <Link className='btn btn-danger' to={"/Sign Up"}>Sign Up</Link>
+                                <Link className='btn btn-danger' to={"/createuser"}>Sign Up</Link>
                             </div>
                             }
                         </div>
